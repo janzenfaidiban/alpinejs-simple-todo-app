@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        .delete:hover {
+            cursor: pointer;
+        }
+
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div x-data="{ todos: [], userInput: ''}">
+        <form x-on:submit.prevent>
+            <input x-model="userInput" placeholder="Enter todo item" type="text">
+            <button x-on:click="if(userInput.trim().length > 0) 
+                todos.push({name: userInput, completed: false}); userInput = ''">Add</button>
+        </form>
+
+        <template x-for="todo in todos">
+            <div>
+                <input type="checkbox" x-model="todo.completed">
+                <span x-text="todo.name" :class="{'completed': todo.completed}"></span>
+                <button @click="todos = todos.filter((currTodo) => currTodo != todo)" class="delete">x</button>
+            </div>
+        </template>
+
+        <button @click="todos = []" x-show="todos.length">Clear All</button>
+
+        <div>
+            <span x-text="todos.filter((todo) => todo.completed).length"></span> /
+            <span x-text="todos.length"></span> todos completed
+        </div>
+
+    </div>
+
+</body>
+
+</html>
